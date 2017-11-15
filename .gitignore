@@ -1,0 +1,7 @@
+src/MsSqlVoteDb/.system/
+src/MsSqlVoteDb/log/
+src/MsSqlVoteDb/data/
+src/MsSqlVoteDb/secrets/
+
+
+

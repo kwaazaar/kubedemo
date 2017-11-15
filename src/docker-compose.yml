@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  voteredis:
+    image: redis
+    container_name: voteredis
+    ports:
+        - "6379:6379"
+
+  votedb:
+    image: microsoft/mssql-server-linux
+    container_name: votedb
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_PID: Express
+      SA_PASSWORD: Password12!
+    volumes:
+        - /var/opt/mssql:/var/opt/mssql
+    ports:
+        - "1433:1433"
+
+  voteapi:
+    build: ./VotingApi
+    image: kubedemo/voteapi:latest
+    container_name: voteapi
+    depends_on:
+      - voteredis
+    environment:
+      MsSqlVoteConnString: "Server=votedb;Database=VoteDb;User ID=sa;Password=Password12!"
+      RedisVoteConnString: "voteredis"
+    ports:
+        - "80:80"

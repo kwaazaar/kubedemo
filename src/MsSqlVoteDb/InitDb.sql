@@ -1,0 +1,11 @@
+CREATE DATABASE VoteDb
+GO
+
+CREATE TABLE Votes
+(
+    Id int IDENTITY(1,1) PRIMARY KEY,
+    [Key] varchar(50) NOT NULL,
+    Score DECIMAL(18,2) NOT NULL,
+    Created DATETIME2(7) NOT NULL
+)
+GO
