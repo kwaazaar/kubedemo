@@ -3,5 +3,6 @@ src/MsSqlVoteDb/log/
 src/MsSqlVoteDb/data/
 src/MsSqlVoteDb/secrets/
 
-
+**/obj/
+**/bin/
 
