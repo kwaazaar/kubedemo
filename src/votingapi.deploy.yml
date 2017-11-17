@@ -1,3 +1,31 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: voteredis
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: voteredis
+    spec:
+      containers:
+      - name: voteredis
+        image: redis
+        ports:
+        - containerPort: 6379
+          name: redis
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: voteredis
+spec:
+  ports:
+  - port: 6379
+  selector:
+    app: voteredis
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -5,10 +33,11 @@ metadata:
   labels:
     name:  votingapi
 spec:
+  replicas: 2
   strategy:
     rollingUpdate:
       maxSurge: 1
-      maxUnavailable: 2
+      maxUnavailable: 1
     type: RollingUpdate
   template:
     metadata:
@@ -16,7 +45,7 @@ spec:
         name:  votingapi
     spec:
       containers:
-      - image:  kubedemo/voteapi:latest
+      - image:  kwaazaar/kubedemo-voteapi:latest
         name:  votingapi
         resources:
           requests:
@@ -47,4 +76,15 @@ spec:
         - name: data
           emptyDir: {}
       restartPolicy: Always
-      imagePullPolicy: Always
+      #imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name:  votingapi
+spec:
+  type: LoadBalancer
+  selector:
+    app:  votingapi
+  ports:
+    - port: 80
