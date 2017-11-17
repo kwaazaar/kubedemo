@@ -21,7 +21,7 @@ services:
 
   voteapi:
     build: ./VotingApi
-    image: kubedemo/voteapi:latest
+    image: kwaazaar/kubedemo-voteapi:latest
     container_name: voteapi
     depends_on:
       - voteredis
