@@ -8,3 +8,14 @@
 /home/robertka/src/kubeDemo/src/VotingApi/bin/Debug/netcoreapp2.0/VotingApi.pdb
 /home/robertka/src/kubeDemo/src/VotingApi/obj/Debug/netcoreapp2.0/VotingApi.dll
 /home/robertka/src/kubeDemo/src/VotingApi/obj/Debug/netcoreapp2.0/VotingApi.pdb
+C:\Data\Src\kubedemo\src\VotingApi\bin\Debug\netcoreapp2.0\VotingApi.deps.json
+C:\Data\Src\kubedemo\src\VotingApi\bin\Debug\netcoreapp2.0\VotingApi.runtimeconfig.json
+C:\Data\Src\kubedemo\src\VotingApi\bin\Debug\netcoreapp2.0\VotingApi.runtimeconfig.dev.json
+C:\Data\Src\kubedemo\src\VotingApi\bin\Debug\netcoreapp2.0\VotingApi.dll
+C:\Data\Src\kubedemo\src\VotingApi\bin\Debug\netcoreapp2.0\VotingApi.pdb
+C:\Data\Src\kubedemo\src\VotingApi\obj\Debug\netcoreapp2.0\VotingApi.csprojResolveAssemblyReference.cache
+C:\Data\Src\kubedemo\src\VotingApi\obj\Debug\netcoreapp2.0\VotingApi.csproj.CoreCompileInputs.cache
+C:\Data\Src\kubedemo\src\VotingApi\obj\Debug\netcoreapp2.0\VotingApi.AssemblyInfoInputs.cache
+C:\Data\Src\kubedemo\src\VotingApi\obj\Debug\netcoreapp2.0\VotingApi.AssemblyInfo.cs
+C:\Data\Src\kubedemo\src\VotingApi\obj\Debug\netcoreapp2.0\VotingApi.dll
+C:\Data\Src\kubedemo\src\VotingApi\obj\Debug\netcoreapp2.0\VotingApi.pdb
