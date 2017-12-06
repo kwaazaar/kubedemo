@@ -42,11 +42,11 @@ spec:
   template:
     metadata:
       labels:
-        name:  votingapi
+        app:  votingapi
     spec:
       containers:
       - image:  kwaazaar/kubedemo-voteapi:latest
-        app:  votingapi
+        name:  votingapi
         resources:
           requests:
             cpu: "20m"
