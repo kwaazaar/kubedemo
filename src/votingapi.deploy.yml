@@ -46,7 +46,7 @@ spec:
     spec:
       containers:
       - image:  kwaazaar/kubedemo-voteapi:latest
-        name:  votingapi
+        app:  votingapi
         resources:
           requests:
             cpu: "20m"
