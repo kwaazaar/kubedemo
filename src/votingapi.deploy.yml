@@ -83,8 +83,26 @@ kind: Service
 metadata:
   name:  votingapi
 spec:
-  type: LoadBalancer
   selector:
     app:  votingapi
+  type: NodePort
   ports:
     - port: 80
+      targetPort: 80
+      name: "votingapi"
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: voting-ingress
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: votingapi.ing
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: votingapi
+          servicePort: "votingapi"
