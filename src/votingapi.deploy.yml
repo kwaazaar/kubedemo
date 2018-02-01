@@ -89,7 +89,7 @@ spec:
   ports:
     - port: 80
       targetPort: 80
-      name: "votingapi"
+      name: votingapi
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -105,4 +105,4 @@ spec:
       - path: /
         backend:
           serviceName: votingapi
-          servicePort: "votingapi"
+          servicePort: votingapi
