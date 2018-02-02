@@ -43,3 +43,22 @@ docker run --privileged --net=host gcr.io/google_containers/kube-proxy-amd64:v1.
 sudo sysctl net.bridge.bridge-nf-call-iptables=1
 # Validate if kube-dns pod is running:
 KUBECONFIG=/etc/kubernetes/admin.conf kubectl get pods --all-namespaces
+
+# Dashboard
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/influxdb.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/grafana.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/heapster.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+
+
+# Nodes:
+# -> Join instructies zoals in output
+
+# Beheer vanaf externe machine
+# # Admin user: gewoon de conf kopieren
+# # Custom user:
+# -> Aanmaken kubectl config file (op master)
+sudo kubeadm alpha phase kubeconfig user --client-name kubeuser > kubeuser.conf
+# -> Rolebinding admin maken en koppelen aan clusterrole admin en user kubeuser daar aan toevoegen
+kubectl create rolebinding admin --clusterrole=admin --user=kubeuser
+

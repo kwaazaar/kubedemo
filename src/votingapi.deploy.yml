@@ -99,7 +99,14 @@ metadata:
     ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: votingapi.ing
+  - host: votingapi.minikube
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: votingapi
+          servicePort: votingapi
+  - host: votingapi.localcluster
     http:
       paths:
       - path: /
