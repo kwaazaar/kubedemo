@@ -40,4 +40,33 @@ spec:
   ports:
     - port: 80
       targetPort: 80
-      name: hw-nginx
+      name: http
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hw-nginx-ingress
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: hw-nginx.minikube
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: hw-nginx
+          servicePort: http
+  - host: hw-nginx.localcluster
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: hw-nginx
+          servicePort: http
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: hw-nginx
+          servicePort: http

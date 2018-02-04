@@ -14,6 +14,20 @@ sudo ufw allow 10255
 sudo ufw allow 30000:32767/tcp
 sudo ufw enable
 
+# Static IP instellen (https://www.howtoforge.com/linux-basics-set-a-static-ip-on-ubuntu)
+sudo nano /etc/network/interfaces
+#Inhoud:
+  iface eth0 inet static
+    address 192.168.1.201
+    netmask 255.255.255.0
+    gateway 192.168.1.254
+    dns-nameservers 192.168.1.254 8.8.8.8 8.8.4.4
+
+# Disable SWAP (https://askubuntu.com/questions/912623/how-to-permanently-disable-swap-file)
+sudo nano /etc/fstab
+# Comment out of verwijder de regel(s) met type=SWAP
+sudo reboot
+
 # Docker
 sudo apt install -y docker.io
 cat << EOF > /etc/docker/daemon.json
@@ -32,23 +46,43 @@ apt update
 apt install -y kubelet kubeadm kubectl
 
 # Master:
-sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address 0.0.0.0 --apiserver-cert-extra-sans master.kubedemo
+
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-cert-extra-sans master.kubedemo # --apiserver-advertise-address 0.0.0.0
 # copy output now!
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+# Pod-network: Flannel
+sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v0.9.1/Documentation/kube-flannel.yml
+
+# Pod-network: KubeRouter
 KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f https://raw.githubusercontent.com/cloudnativelabs/kube-router/master/daemonset/kubeadm-kuberouter-all-features.yaml
 KUBECONFIG=/etc/kubernetes/admin.conf kubectl -n kube-system delete ds kube-proxy
 docker run --privileged --net=host gcr.io/google_containers/kube-proxy-amd64:v1.7.3 kube-proxy --cleanup-iptables
+
+
 sudo sysctl net.bridge.bridge-nf-call-iptables=1
+iptables -P FORWARD ACCEPT
+#optional: sudo reboot
+
 # Validate if kube-dns pod is running:
 KUBECONFIG=/etc/kubernetes/admin.conf kubectl get pods --all-namespaces
 
 # Dashboard
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/influxdb.yaml
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/grafana.yaml
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/heapster.yaml
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+sudo kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/influxdb.yaml
+sudo kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/grafana.yaml
+sudo kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/heapster.yaml
+sudo kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+
+# Nginx ingress controller resources (with RBAC), is er maar 1 nodig per cluster
+sudo kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/namespace.yaml
+sudo kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/default-backend.yaml
+sudo kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/configmap.yaml
+sudo kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/tcp-services-configmap.yaml
+sudo kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/udp-services-configmap.yaml
+sudo kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/rbac.yaml
+sudo kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/with-rbac.yaml
 
 
 # Nodes:
