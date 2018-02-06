@@ -35,6 +35,8 @@ cat << EOF > /etc/docker/daemon.json
   "exec-opts": ["native.cgroupdriver=cgroupfs"]
 }
 EOF
+sudo mkdir /etc/systemd/system/docker.service.d/
+sudo echo "ExecStartPost=/sbin/iptables -P FORWARD ACCEPT" >> /etc/systemd/system/docker.service.d/exec_start.conf
 
 # kubeadm/kubelet/kubectl
 apt install -y apt-transport-https
@@ -60,7 +62,6 @@ sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v0.9.1/Do
 KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f https://raw.githubusercontent.com/cloudnativelabs/kube-router/master/daemonset/kubeadm-kuberouter-all-features.yaml
 KUBECONFIG=/etc/kubernetes/admin.conf kubectl -n kube-system delete ds kube-proxy
 docker run --privileged --net=host gcr.io/google_containers/kube-proxy-amd64:v1.7.3 kube-proxy --cleanup-iptables
-
 
 sudo sysctl net.bridge.bridge-nf-call-iptables=1
 iptables -P FORWARD ACCEPT
@@ -89,10 +90,15 @@ sudo kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx
 # -> Join instructies zoals in output
 
 # Beheer vanaf externe machine
+# Via serviceaccount:
+# - Aanmaken via adminuser.yml
+# - Token ophalen (voor inloggen op dashboard): kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
+
+
 # # Admin user: gewoon de conf kopieren
-# # Custom user:
+# # Custom user (let op: geen rechten op kube-system namespace ... :-s):
 # -> Aanmaken kubectl config file (op master)
-sudo kubeadm alpha phase kubeconfig user --client-name kubeuser > kubeuser.conf
+sudo kubeadm alpha phase kubeconfig user --client-name kubeadmin > kubeadmin.conf
 # -> Rolebinding admin maken en koppelen aan clusterrole admin en user kubeuser daar aan toevoegen
-kubectl create rolebinding admin --clusterrole=admin --user=kubeuser
+kubectl create rolebinding clusteradmin --clusterrole=cluster-admin --user=kubeadmin
 
