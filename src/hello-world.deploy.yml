@@ -1,11 +1,11 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name:  hw-nginx
+  name:  hw-nginx-deploy
   labels:
-    name:  hw-nginx
+    name:  hw-nginx-deploy
 spec:
-  replicas: 2
+  replicas: 1
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -14,33 +14,33 @@ spec:
   template:
     metadata:
       labels:
-        app: hw-nginx
+        app: hw-nginx-deploy-tpl
     spec:
       containers:
       - image:  nginx:latest
-        name:  hw-nginx
+        name:  hw-nginx-ctl
         resources:
           requests:
             cpu: "20m"
             memory: "55M"
         ports:
-        - containerPort:  80
-          name:  mainport
+        - name: http-ctl
+          containerPort: 80
       restartPolicy: Always
       #imagePullPolicy: Always
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name:  hw-nginx
+  name:  hw-nginx-svc
 spec:
   selector:
-    app:  hw-nginx
+    app:  hw-nginx-deploy-tpl
   type: NodePort
   ports:
     - port: 80
-      targetPort: 80
-      name: http
+      targetPort: http-ctl
+      name: http-svc
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -55,18 +55,22 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: hw-nginx
-          servicePort: http
+          serviceName: hw-nginx-svc
+          servicePort: http-svc
   - host: hw-nginx.localcluster
     http:
       paths:
       - path: /
         backend:
-          serviceName: hw-nginx
-          servicePort: http
+          serviceName: hw-nginx-svc
+          servicePort: http-svc
   - http:
       paths:
       - path: /
         backend:
-          serviceName: hw-nginx
-          servicePort: http
+          serviceName: hw-nginx-svc
+          servicePort: http-svc
+      - path: /hw
+        backend:
+          serviceName: hw-nginx-svc
+          servicePort: http-svc
