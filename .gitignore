@@ -255,7 +255,7 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
-src/VotingApi/obj/project.assets.json
-src/VotingApi/obj/Debug/netcoreapp2.0/VotingApi.csproj.CoreCompileInputs.cache
-src/VotingApi/obj/VotingApi.csproj.nuget.g.props
-src/VotingApi/obj/VotingApi.csproj.nuget.cache
+
+# /bin and /obj folder
+obj
+bin
