@@ -36,7 +36,7 @@ metadata:
 spec:
   selector:
     app:  hw-nginx-deploy-tpl
-  type: NodePort
+  type: ClusterIP
   ports:
     - port: 80
       targetPort: http-ctl
@@ -50,27 +50,10 @@ metadata:
     ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: hw-nginx.minikube
+  - host: helloworld.docati.com
     http:
       paths:
       - path: /
-        backend:
-          serviceName: hw-nginx-svc
-          servicePort: http-svc
-  - host: hw-nginx.localcluster
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: hw-nginx-svc
-          servicePort: http-svc
-  - http:
-      paths:
-      - path: /
-        backend:
-          serviceName: hw-nginx-svc
-          servicePort: http-svc
-      - path: /hw
         backend:
           serviceName: hw-nginx-svc
           servicePort: http-svc
