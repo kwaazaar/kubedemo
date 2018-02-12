@@ -1,3 +1,4 @@
+
 # ssh-server (if not yet installed)
 sudo apt install -y openssh-server
 
@@ -29,7 +30,20 @@ sudo nano /etc/fstab
 sudo reboot
 
 # Docker
-sudo apt install -y docker.io
+# - Source: https://docs.docker.com/install/linux/docker-ce/ubuntu/
+# - Remove existing docker installation (if any)
+sudo apt remove docker docker-engine docker.io -y
+# - Add docker key and repo
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+# - Install docker
+sudo apt update
+sudo apt install docker-ce -y
+sudo docker run hello-world
+# - Niet zeker of dit ook moet
 cat << EOF > /etc/docker/daemon.json
 {
   "exec-opts": ["native.cgroupdriver=cgroupfs"]
@@ -48,8 +62,10 @@ apt update
 apt install -y kubelet kubeadm kubectl
 
 # Master:
+# Let op: bereiken via dns/extern-ip: --apiserver-cert-extra-sans=40.68.221.229,kube1.westeurope.cloudapp.azure.com
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-cert-extra-sans=40.68.221.229,kube1.westeurope.cloudapp.azure.com # --apiserver-advertise-address 0.0.0.0
 
-sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-cert-extra-sans master.kubedemo # --apiserver-advertise-address 0.0.0.0
+
 # copy output now!
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
@@ -64,7 +80,7 @@ KUBECONFIG=/etc/kubernetes/admin.conf kubectl -n kube-system delete ds kube-prox
 docker run --privileged --net=host gcr.io/google_containers/kube-proxy-amd64:v1.7.3 kube-proxy --cleanup-iptables
 
 sudo sysctl net.bridge.bridge-nf-call-iptables=1
-iptables -P FORWARD ACCEPT
+sudo iptables -P FORWARD ACCEPT
 #optional: sudo reboot
 
 # Validate if kube-dns pod is running:
