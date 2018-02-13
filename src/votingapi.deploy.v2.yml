@@ -1,31 +1,3 @@
-apiVersion: apps/v1beta1
-kind: Deployment
-metadata:
-  name: voteredis
-spec:
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: voteredis
-    spec:
-      containers:
-      - name: voteredis
-        image: redis
-        ports:
-        - containerPort: 6379
-          name: redis
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: voteredis
-spec:
-  ports:
-  - port: 6379
-  selector:
-    app: voteredis
----
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -47,7 +19,7 @@ spec:
       imagePullSecrets:
         - name: kubedemo-cr
       containers:
-      - image:  kubedemo.azurecr.io/kubedemo/votingapi:v1
+      - image:  kubedemo.azurecr.io/kubedemo/votingapi:v2
         name:  votingapi
         resources:
           requests:
@@ -79,31 +51,3 @@ spec:
           emptyDir: {}
       restartPolicy: Always
       #imagePullPolicy: Always
----
-apiVersion: v1
-kind: Service
-metadata:
-  name:  votingapi
-spec:
-  selector:
-    app:  votingapi
-  ports:
-    - port: 80
-      targetPort: mainport
-      name: votingapi
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: voting-ingress
-  annotations:
-    ingress.kubernetes.io/rewrite-target: /
-spec:
-  rules:
-  - host: votingapi.docati.com
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: votingapi
-          servicePort: votingapi

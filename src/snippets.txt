@@ -1,25 +1,18 @@
-http://127.0.0.1:8001/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy/#!/overview?namespace=default
+# Deploy update
 
-minikube start --vm-driver=hyperv --hyperv-virtual-switch=ExtWifi
-(alleen eerste keer params nodig)
+kubectl apply -f .\votingapi.deploy.v2.yml
 
-kubectl cluster-info
+kubectl rollout status deploy votingapi
+    Waiting for rollout to finish: 1 old replicas are pending termination...
+    Waiting for rollout to finish: 1 old replicas are pending termination...
+    Waiting for deployment spec update to be observed...
+    Waiting for deployment spec update to be observed...
+    Waiting for rollout to finish: 1 out of 2 new replicas have been updated...
+    Waiting for rollout to finish: 1 out of 2 new replicas have been updated...
+    Waiting for rollout to finish: 1 out of 2 new replicas have been updated...
+    Waiting for rollout to finish: 1 of 2 updated replicas are available...
+    deployment "votingapi" successfully rolled out
 
-kubectl create -f .\votingapi.deploy.yml
-
-kubectl get service --watch
-
-kubectl get pods
-
-kubectl describe pods votingapi
-
-kubectl delete -f votingapi.deploy.yml
-
--- minikube zelf service laten proxien??
-minikube service votingapi
+kubectl rollout undo deploy votingapi
 
 
-
-Context:
-kubectl config get-contexts
-kubectl config use-context kubedemoac-kubedemoacs-d6b1cemgmt
