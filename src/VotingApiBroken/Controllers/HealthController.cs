@@ -13,7 +13,7 @@ namespace VotingApi.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok();
+            return StatusCode(500);
         }
     }
 }
