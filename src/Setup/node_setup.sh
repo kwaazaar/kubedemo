@@ -102,6 +102,8 @@ sudo kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx
 sudo kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/with-rbac.yaml
 sudo kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/provider/baremetal/service-nodeport.yaml
 
+# Custom container registry
+kubectl create secret docker-registry kubedemo-cr --docker-server=kubedemo.azurecr.io --docker-username=kubedemo --docker-password==O1CicSshvxwuVlEemfphqDF8u1LZzsr --docker-email=kubedemo@docati.com
 
 # Nodes:
 # -> Join instructies zoals in output
