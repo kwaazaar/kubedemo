@@ -45,7 +45,7 @@ spec:
         app:  votingapi
     spec:
       containers:
-      - image:  kwaazaar/kubedemo-voteapi:latest
+      - image:  kubedemo.azurecr.io/kubedemo/votingapi:v1
         name:  votingapi
         resources:
           requests:
