@@ -107,3 +107,10 @@ spec:
         backend:
           serviceName: votingapi
           servicePort: votingapi
+  - host: votingapi.ddns.net
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: votingapi
+          servicePort: votingapi

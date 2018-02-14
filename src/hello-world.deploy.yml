@@ -57,3 +57,10 @@ spec:
         backend:
           serviceName: hw-nginx-svc
           servicePort: http-svc
+  - host: hworld.ddns.net
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: hw-nginx-svc
+          servicePort: http-svc
