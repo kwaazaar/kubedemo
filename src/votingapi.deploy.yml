@@ -44,10 +44,10 @@ spec:
       labels:
         app:  votingapi
     spec:
-      imagePullSecrets:
-        - name: kubedemo-cr
+      # imagePullSecrets:
+      #   - name: kubedemo-cr
       containers:
-      - image:  kubedemo.azurecr.io/kubedemo/votingapi:v1
+      - image:  kubedemoaks.azurecr.io/kubedemoaks-voteapi:v1
         name:  votingapi
         resources:
           requests:
@@ -108,6 +108,13 @@ spec:
           serviceName: votingapi
           servicePort: votingapi
   - host: votingapi.ddns.net
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: votingapi
+          servicePort: votingapi
+  - host: kubedemoaks.baspoldervaart.nl
     http:
       paths:
       - path: /
