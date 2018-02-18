@@ -87,37 +87,10 @@ metadata:
 spec:
   selector:
     app:  votingapi
+  loadBalancerIP: 13.95.80.166
+  type: LoadBalancer
   ports:
     - port: 80
       targetPort: mainport
       name: votingapi
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: voting-ingress
-  annotations:
-    ingress.kubernetes.io/rewrite-target: /
-spec:
-  rules:
-  - host: votingapi.docati.com
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: votingapi
-          servicePort: votingapi
-  - host: votingapi.ddns.net
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: votingapi
-          servicePort: votingapi
-  - host: kubedemoaks.baspoldervaart.nl
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: votingapi
-          servicePort: votingapi
+
