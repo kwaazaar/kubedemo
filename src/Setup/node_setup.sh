@@ -113,6 +113,8 @@ kubectl create secret docker-registry kubedemo-cr --docker-server=kubedemo.azure
 # - Aanmaken via adminuser.yml
 # - Token ophalen (voor inloggen op dashboard): kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
 
+# Bash draaien binnen cluster
+kubectl run bash --rm -i --tty --image ubuntu -- bash
 
 # # Admin user: gewoon de conf kopieren
 # # Custom user (let op: geen rechten op kube-system namespace ... :-s):

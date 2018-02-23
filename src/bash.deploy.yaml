@@ -1,21 +1,19 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
+# kubectl exec bash-54967b9b79-qvrfl -i -t bash
 metadata:
   name:  bash
 spec:
   template:
+    metadata:
+      labels:
+        app: bash
     spec:
       containers:
-      - image:  bash:latest
+      - image:  ubuntu:latest
         name:  bash
         command: [ "/bin/bash", "-c", "--" ]
         args: [ "while true; do sleep 30; done;" ]
-        resources:
-          requests:
-            cpu: "20m"
-            memory: "55M"
-          initialDelaySeconds: 30
-          timeoutSeconds: 10
         ports:
         - containerPort:  22
           name:  ssh
@@ -25,5 +23,3 @@ spec:
       volumes:
         - name: data
           emptyDir: {}
-      restartPolicy: OnFailure
-      imagePullPolicy: Always
