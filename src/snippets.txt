@@ -16,3 +16,22 @@ kubectl rollout status deploy votingapi
 kubectl rollout undo deploy votingapi
 
 
+# Pods vs containers
+- Meedere containers in pod
+- Scaling per pod dus per set
+- Shared volume
+
+#Volumes
+- emptyDir (default): verdwijnt bij restart van pod (alleen durable voor restart van container in pod, bv voor cachebestanden) - geen isolation!
+- hostPath, local: dir op node (zoals Docker). Let op: bij scaling/scheduling wordt pod gestart/verplaatst naar andere node. Meerdere pods kunnen zelfde path gebruiken. - geen isolation
+- iSCSI, nfs: network storage
+- Flocker: (=container volume manager)
+- gcePersistentDisk, azureDisk/File, awsElasticBlockStore: cloud storage gemount
+- gitRepo: emptyDir met repo clone
+- configMaps als files
+- secret: secrets als files (ram backed)
+- persistentVolumeClaims: abstractie, dus pod claimt volume (grootte, access-mode, class (slow,superFast,onlyFastInRO), maar kent implementatie niet
+
+
+
+
