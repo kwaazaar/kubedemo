@@ -1,0 +1,28 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name:  bash
+spec:
+  template:
+    spec:
+      containers:
+      - image:  bash:latest
+        name:  bash
+        command: ["/bin/sh"]
+        resources:
+          requests:
+            cpu: "20m"
+            memory: "55M"
+          initialDelaySeconds: 30
+          timeoutSeconds: 10
+        ports:
+        - containerPort:  22
+          name:  ssh
+        volumeMounts:
+        - mountPath: /data
+          name: data
+      volumes:
+        - name: data
+          emptyDir: {}
+      restartPolicy: OnFailure
+      imagePullPolicy: Always
