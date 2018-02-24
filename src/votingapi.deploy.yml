@@ -47,7 +47,7 @@ spec:
       # imagePullSecrets:
       #   - name: kubedemo-cr
       containers:
-      - image:  kubedemoaks.azurecr.io/kubedemoaks-voteapi:v1
+      - image:  kubedemoaks.azurecr.io/kubedemoaks-votingapi:v3
         name:  votingapi
         resources:
           requests:
@@ -61,7 +61,7 @@ spec:
           timeoutSeconds: 10
         readinessProbe:
           httpGet:
-            path: /api/health
+            path: /api/ready
             port: 80
           initialDelaySeconds: 30
           timeoutSeconds: 10
