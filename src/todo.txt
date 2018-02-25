@@ -1,3 +1,0 @@
-- Eigen containerregistry
-- Webapi extern beschikbaar maken - DONE, via ingress
-- Uitzoeken vage poortnr bij ingress/nodeport

@@ -44,8 +44,6 @@ spec:
       labels:
         app:  votingapi
     spec:
-      # imagePullSecrets:
-      #   - name: kubedemo-cr
       containers:
       - image:  kubedemoaks.azurecr.io/kubedemoaks-votingapi:v3
         name:  votingapi
