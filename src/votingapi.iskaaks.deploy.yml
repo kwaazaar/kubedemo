@@ -1,0 +1,93 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: voteredis
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: voteredis
+    spec:
+      containers:
+      - name: voteredis
+        image: redis
+        ports:
+        - containerPort: 6379
+          name: redis
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: voteredis
+spec:
+  ports:
+  - port: 6379
+  selector:
+    app: voteredis
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name:  votingapi
+  labels:
+    name:  votingapi
+spec:
+  replicas: 2
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app:  votingapi
+    spec:
+      containers:
+      - image:  iskaaksacr.azurecr.io/kubedemoaks-votingapi:latest
+        name:  votingapi
+        resources:
+          requests:
+            cpu: "20m"
+            memory: "55M"
+        livenessProbe:
+          httpGet:
+            path: /api/health
+            port: 80
+          initialDelaySeconds: 90
+          timeoutSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /api/ready
+            port: 80
+          initialDelaySeconds: 30
+          timeoutSeconds: 10
+        env:
+        - name:  RedisVoteConnString
+          value:  "voteredis"       
+        ports:
+        - containerPort:  80
+          name:  mainport
+        volumeMounts:
+        - mountPath: /data
+          name: data
+      volumes:
+        - name: data
+          emptyDir: {}
+      restartPolicy: Always
+      #imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name:  votingapi
+spec:
+  selector:
+    app:  votingapi
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: mainport
+      name: votingapi
+
