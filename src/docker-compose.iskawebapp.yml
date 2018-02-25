@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  iskawebapp:
+    image: iskaaksacr.azurecr.io/kubedemoaks-iskawebapp:latest
+    build:
+      context: .
+      dockerfile: IskaWebApp/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "8080"
