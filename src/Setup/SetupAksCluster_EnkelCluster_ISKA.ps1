@@ -1,6 +1,5 @@
 $resourceGroup = "rgIskaAKS";
 $cluster = "IskaAKSCluster";
-$acrName = "IskaAKSAcr";
 
 # Maak het Kubernetes cluster aan
 az aks create --resource-group $resourceGroup --name $cluster --node-count 1 --generate-ssh-keys

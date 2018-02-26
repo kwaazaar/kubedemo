@@ -1,5 +1,4 @@
 $resourceGroup = "rgIskaAKS";
-$cluster = "IskaAKSCluster";
 $acrName = "IskaAKSAcr";
 
 # Maak een Azure Resource Group aan
