@@ -117,6 +117,9 @@ kubectl create secret docker-registry kubedemo-cr --docker-server=kubedemo.azure
 # Bash draaien binnen cluster
 kubectl run bash --rm -i --tty --image ubuntu -- bash
 
+# Networking testen (pullen van img door node, internet access vanuit container)
+kubectl run busybox --image=busybox --rm -ti --restart=Never --command -- ping -c 5 google-public-dns-a.google.com
+
 # # Admin user: gewoon de conf kopieren
 # # Custom user (let op: geen rechten op kube-system namespace ... :-s):
 # -> Aanmaken kubectl config file (op master)
