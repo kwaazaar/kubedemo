@@ -29,6 +29,10 @@ sudo nano /etc/fstab
 # Comment out of verwijder de regel(s) met type=SWAP
 sudo reboot
 
+# Network config
+sudo sysctl net.bridge.bridge-nf-call-iptables=1
+sudo iptables -P FORWARD ACCEPT
+
 # Docker
 # - Source: https://docs.docker.com/install/linux/docker-ce/ubuntu/
 # - Remove existing docker installation (if any)
@@ -39,10 +43,10 @@ sudo add-apt-repository \
    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
    $(lsb_release -cs) \
    stable"
-# - Install docker
+# - Install docker (https://docs.docker.com/install/linux/docker-ce/ubuntu/)
+#  !Max validated version: 17.03
 sudo apt update
-sudo apt install docker-ce -y
-sudo docker run hello-world
+sudo apt install docker-ce=17.03.2~ce-0~ubuntu-xenial -y
 # - Niet zeker of dit ook moet
 cat << EOF > /etc/docker/daemon.json
 {
@@ -51,9 +55,10 @@ cat << EOF > /etc/docker/daemon.json
 EOF
 sudo mkdir /etc/systemd/system/docker.service.d/
 sudo echo "ExecStartPost=/sbin/iptables -P FORWARD ACCEPT" >> /etc/systemd/system/docker.service.d/exec_start.conf
+sudo docker run hello-world
 
 # kubeadm/kubelet/kubectl
-apt install -y apt-transport-https
+sudo apt install -y apt-transport-https
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
 deb http://apt.kubernetes.io/ kubernetes-xenial main
@@ -79,8 +84,6 @@ KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f https://raw.githubusercon
 KUBECONFIG=/etc/kubernetes/admin.conf kubectl -n kube-system delete ds kube-proxy
 docker run --privileged --net=host gcr.io/google_containers/kube-proxy-amd64:v1.7.3 kube-proxy --cleanup-iptables
 
-sudo sysctl net.bridge.bridge-nf-call-iptables=1
-sudo iptables -P FORWARD ACCEPT
 #optional: sudo reboot
 
 # Validate if kube-dns pod is running:
