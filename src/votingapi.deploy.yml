@@ -45,7 +45,7 @@ spec:
         app:  votingapi
     spec:
       containers:
-      - image:  kubedemoaks.azurecr.io/kubedemoaks-votingapi:v3
+      - image:  iskaakscontainerregistry.azurecr.io/kubedemoaks-votingapi:v1
         name:  votingapi
         resources:
           requests:
@@ -85,7 +85,7 @@ metadata:
 spec:
   selector:
     app:  votingapi
-  loadBalancerIP: 13.95.80.166
+  loadBalancerIP: 13.80.10.176
   type: LoadBalancer
   ports:
     - port: 80

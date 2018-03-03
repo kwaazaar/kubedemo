@@ -1,5 +1,5 @@
-$resourceGroup = "rgIskaAKS";
-$acrName = "IskaAKSAcr";
+$resourceGroup = "IskaAKSBasP";
+$acrName = "IskaAKSContainerRegistry";
 
 # Maak een Azure Resource Group aan
 az group create --name $resourceGroup --location westeurope

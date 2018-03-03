@@ -1,4 +1,4 @@
-$resourceGroup = "rgIskaAKS";
+$resourceGroup = "IskaAKSBasP";
 $cluster = "IskaAKSCluster";
 
 # Maak het Kubernetes cluster aan

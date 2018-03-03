@@ -150,6 +150,7 @@ spec:
   selector:
     app:  iskawebapp
   type: LoadBalancer
+  # loadBalancerIP: 13.80.10.176
   ports:
     - port: 80
       targetPort: mainport
