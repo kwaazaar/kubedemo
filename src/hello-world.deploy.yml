@@ -50,13 +50,6 @@ metadata:
     ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: helloworld.docati.com
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: hw-nginx-svc
-          servicePort: http-svc
   - host: hworld.ddns.net
     http:
       paths:
