@@ -44,7 +44,7 @@ sudo add-apt-repository \
    $(lsb_release -cs) \
    stable"
 # - Install docker (https://docs.docker.com/install/linux/docker-ce/ubuntu/)
-#  !Max validated version: 17.03
+#  !Max validated version for Kubernetes 1.8+1.9: 17.03.2
 sudo apt update
 sudo apt install docker-ce=17.03.2~ce-0~ubuntu-xenial -y
 # - Niet zeker of dit ook moet
