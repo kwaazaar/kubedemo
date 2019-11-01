@@ -1,5 +1,5 @@
 # Sample from: https://github.com/dotnet/dotnet-docker-samples/blob/master/dotnetapp-prod/Dockerfile
-FROM microsoft/dotnet:2.0-sdk AS build-env
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build-env
 WORKDIR /app
 
 # copy csproj and restore as distinct layers
@@ -11,7 +11,7 @@ COPY . ./
 RUN dotnet publish -c Release -o out
 
 # build runtime image
-FROM microsoft/aspnetcore:latest 
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2 
 WORKDIR /app
 COPY --from=build-env /app/out ./
 ENTRYPOINT ["dotnet", "VotingApi.dll"]

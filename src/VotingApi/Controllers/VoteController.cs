@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 
 namespace VotingApi.Controllers
 {
+    [ApiController]
     [Route("api/[controller]")]
     public class VoteController : Controller
     {
@@ -17,14 +15,41 @@ namespace VotingApi.Controllers
         }
 
         [HttpGet]
-        public Task<IEnumerable<VoteSummary>> Get(string pair)
+        public async Task<IActionResult> Get(string pair)
         {
-            return _repo.LoadVoteSummaries(pair);
+            if (string.IsNullOrWhiteSpace(pair))
+            {
+                return BadRequest("No votingpair ('pair') provided");
+            }
+
+            return Ok(await _repo.LoadVoteSummaries(pair));
         }
 
         [HttpPost]
-        public Task Post([FromBody]VoteSummary vote) => _repo.SaveVote(vote);
+        public async Task<IActionResult> Post([FromBody]VoteSummary vote)
+        {
+            if (vote == null)
+            {
+                return BadRequest("No vote provided");
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        public Task Delete(string pair) => _repo.ClearVotes(pair);
+            await _repo.SaveVote(vote);
+            return Ok();
+        }
+
+        public async Task<IActionResult> Delete(string pair)
+        {
+            if (string.IsNullOrWhiteSpace(pair))
+            {
+                return BadRequest("No votingpair ('pair') provided");
+            }
+
+            await _repo.ClearVotes(pair);
+            return Ok();
+        }
     }
 }
