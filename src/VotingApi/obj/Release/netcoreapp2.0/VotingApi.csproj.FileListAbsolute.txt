@@ -1,3 +1,0 @@
-/home/robertka/src/kubeDemo/src/VotingApi/obj/Release/netcoreapp2.0/VotingApi.csproj.CoreCompileInputs.cache
-/home/robertka/src/kubeDemo/src/VotingApi/obj/Release/netcoreapp2.0/VotingApi.AssemblyInfoInputs.cache
-/home/robertka/src/kubeDemo/src/VotingApi/obj/Release/netcoreapp2.0/VotingApi.AssemblyInfo.cs
