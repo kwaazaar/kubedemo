@@ -117,3 +117,20 @@ spec:
         backend:
           serviceName: votingapi
           servicePort: votingapi
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: voting-ingress-extern
+  annotations:
+    kubernetes.io/ingress.class: "public"
+    ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: votingdemo.ddns.net
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: votingapi
+          servicePort: votingapi
