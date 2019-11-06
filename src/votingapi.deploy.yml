@@ -52,7 +52,7 @@ spec:
         app:  votingapi
     spec:
       containers:
-      - image: aahnlcontainerregistry.azurecr.io/votingapi:$(Build.BuildId)
+      - image: aahnlcontainerregistry.azurecr.io/votingapi:#{Build.BuildId}#
         name:  votingapi
         resources:
           requests:
